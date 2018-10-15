@@ -395,10 +395,30 @@ $(document).ready(function ()
             {
               $('#mail').css("border", "2px solid firebrick");
               $('label[for="mail"]').html('<span style="color:firebrick"><strong>Email: (Please enter your email address)</strong></span>');
-            } 
+            }
+
+
+          let activityLegend = $('legend')[2];
+          if(!$('.activities input:checked').length > 0)
+            {
+              $(activityLegend).html('<span style="color:firebrick"><strong>Register for Activities: (Please select at least one activity)</strong></span>');
+            } else
+              {
+                $(activityLegend).html('<span style="color:inherit">Register for Activities</span>');
+              }
+
+
+
+
+
+
+
+
+
 
           if($('#name').val() != '' &&
-             $('#mail').val() != '')
+             $('#mail').val() != '' &&
+             $(activityLegend).length > 0)
             {
               $('form').submit();
               alert("form submitted");

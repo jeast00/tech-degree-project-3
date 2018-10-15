@@ -343,6 +343,8 @@ $(document).ready(function ()
         if Credit Card is the selected payment method.
     */
 
+    //----------------------------------------------------------------------------------------------//
+
     //Name cannot be blank ~~Real-Time error message 1 --Extra Credit-- --Exceeds Expectations
     $('#name').on('input', function(event)
       {
@@ -373,5 +375,37 @@ $(document).ready(function ()
               $('label[for="mail"]').html('<span style="color:inherit"><strong>Email:</strong></span>');
             }
       });
+
+      //----------------------------------------------------------------------------------------------//
+
+
+
+
+      //When Form is submitted, check for the following errors
+      $('button').click(function(event)
+        {
+          event.preventDefault();
+          if(!$('#name').val())
+            {
+              $('#name').css("border", "2px solid firebrick");
+              $('label[for="name"]').html('<span style="color:firebrick"><strong>Name: (Please enter your name)</strong></span>');
+            }
+
+          if(!$('#mail').val())
+            {
+              $('#mail').css("border", "2px solid firebrick");
+              $('label[for="mail"]').html('<span style="color:firebrick"><strong>Email: (Please enter your email address)</strong></span>');
+            } 
+
+          if($('#name').val() != '' &&
+             $('#mail').val() != '')
+            {
+              $('form').submit();
+              alert("form submitted");
+            }
+        });
+
+
+
 
 });

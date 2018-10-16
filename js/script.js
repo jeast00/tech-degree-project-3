@@ -286,6 +286,9 @@ $(document).ready(function ()
     //Remove the "select payment method" option from the list.
     $('#payment option[value="select_method"]').remove();
 
+    //Initiate the credit card option selected on default
+    $('#credit-card').attr('selected', 'selected');
+
     //Initially hide the first and last paragraphs from the payment options to ensure
     //the credit card payment method is selected by default
     $('p:first').hide();
@@ -299,14 +302,17 @@ $(document).ready(function ()
             $('p:first').hide();
             $('p:last').hide();
             $('#credit-card').show();
+            $('#credit-card').attr('selected', 'selected');
           }else if ($(this).val() == 'paypal')
             {
               $('#credit-card').hide();
+              $('#credit-card').removeAttr('selected');
               $('p:last').hide();
               $('p:first').show();
             }else if ($(this).val() == 'bitcoin')
               {
                 $('#credit-card').hide();
+                $('#credit-card').removeAttr('selected');
                 $('p:first').hide();
                 $('p:last').show();
               }
@@ -384,20 +390,30 @@ $(document).ready(function ()
       //When Form is submitted, check for the following errors
       $('button').click(function(event)
         {
-          event.preventDefault();
+          event.preventDefault(); //Prevent the form from submitting before all form fields are valid
+
+          let ccNumber = $('#cc-num').val();
+          let zipCodeNumber = $('#zip').val();
+          let cvvNumber = $('#cvv').val();
+          let ccNumberRegex = ccNumber.match(/[0-9]+/);
+          let zipCodeRegex = zipCodeNumber.match(/[0-9]+/);
+          let cvvRegex = cvvNumber.match(/[0-9]+/);
+
+          //Name Error Message
           if(!$('#name').val())
             {
               $('#name').css("border", "2px solid firebrick");
               $('label[for="name"]').html('<span style="color:firebrick"><strong>Name: (Please enter your name)</strong></span>');
             }
 
+          //Email Error Message
           if(!$('#mail').val())
             {
               $('#mail').css("border", "2px solid firebrick");
               $('label[for="mail"]').html('<span style="color:firebrick"><strong>Email: (Please enter your email address)</strong></span>');
             }
 
-
+          //Activity Error Message
           let activityLegend = $('legend')[2];
           if(!$('.activities input:checked').length > 0)
             {
@@ -407,10 +423,31 @@ $(document).ready(function ()
                 $(activityLegend).html('<span style="color:inherit">Register for Activities</span>');
               }
 
+          if($('#credit-card :selected'))
+            {
+              if(!ccNumber)
+                {
+                  $('#cc-num').css("border", "2px solid firebrick");
+                  $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>Card Number:</strong></span>');
+                } else if(ccNumber && !ccNumberRegex)
+                  {
+                    $('#cc-num').css("border", "2px solid firebrick");
+                    $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Please enter a number)</strong></span>');
+                  } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16))
+                    {
+                      $('#cc-num').css("border", "2px solid firebrick");
+                      $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Must be 13 to 16 digits long)</strong></span>');
+                    }
+
+                  else
+                    {
+                      $('#cc-num').css("border", "1px solid #679cb3");
+                      $('label[for="cc-num"]').html('<span style="color:inherit"><strong>Card Number:</strong></span>');
+                    }
 
 
 
-
+            }
 
 
 
@@ -418,7 +455,8 @@ $(document).ready(function ()
 
           if($('#name').val() != '' &&
              $('#mail').val() != '' &&
-             $(activityLegend).length > 0)
+             $(activityLegend).length > 0 &&
+             $('cc-num').val() != '')
             {
               $('form').submit();
               alert("form submitted");

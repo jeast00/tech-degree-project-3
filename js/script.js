@@ -455,8 +455,8 @@ $(document).ready(function ()
 
           if($('#name').val() != '' &&
              $('#mail').val() != '' &&
-             $(activityLegend).length > 0 &&
-             $('cc-num').val() != '')
+             $('.activities input:checked').length > 0 &&
+             $('cc-num') != '' && ccNumber && ccNumberRegex && (ccNumber.length >= 13 && ccNumber.length <=16))
             {
               $('form').submit();
               alert("form submitted");

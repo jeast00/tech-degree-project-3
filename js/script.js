@@ -610,12 +610,12 @@ $(document).ready(function ()
                      validateCVVNumberOnSubmit() == true)
                      {
                        $('form').submit();
-                       alert("form submitted");
+                       alert("form is submitted. Thank you!");
                      }
                 } else
                   {
                     $('form').submit();
-                    alert("form submitted");
+                    alert("form is submitted. Thank you!");
                   }
             }
         });

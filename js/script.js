@@ -568,7 +568,7 @@ $(document).ready(function ()
                       } else
                         {
                           $('#zip').css("border", "1px solid #679cb3");
-                          $('label[for="zip"]').html('<span style="color:inherit">Zip Code:</span>');
+                          $('label[for="zip"]').html('<span style="color:inherit"><strong>Zip Code:</strong></span>');
                         }
 
                 //validate cvv input
@@ -587,7 +587,7 @@ $(document).ready(function ()
                       } else
                         {
                           $('#cvv').css("border", "1px solid #679cb3");
-                          $('label[for="cvv"]').html('<span style="color:inherit">CVV:</span>');
+                          $('label[for="cvv"]').html('<span style="color:inherit"><strong>CVV:</strong></span>');
                         }
 
 

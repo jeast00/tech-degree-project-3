@@ -384,9 +384,7 @@ $(document).ready(function ()
         {
           if(!$('#name').val())
             {
-              $('#name').focus();
-              // $('#name').css("border", "2px solid firebrick");
-              // $('label[for="name"]').html('<span style="color:firebrick"><strong>Name: (Please enter your name)</strong></span>');
+              $('#name').focus(); //Ensure that the Name input field is still focused when the 'register' button is clicked
               return false;
             } else
               {

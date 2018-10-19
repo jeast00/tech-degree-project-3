@@ -423,6 +423,78 @@ $(document).ready(function ()
                   }
             }
 
+          //Credit Card Number input
+          function validateCreditCardNumberOnSubmit()
+            {
+              let paymentID = $('#payment').val();
+              let ccNumber = $('#cc-num').val();
+              let ccNumberRegex = ccNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+              if(paymentID == "credit card")
+                {
+                  if(!ccNumber)
+                    {
+                      return false;
+                    } else if(ccNumber && !ccNumberRegex)
+                      {
+                        return false;
+                      } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16))
+                        {
+                          return false;
+                        } else
+                        {
+                          return true;
+                        }
+                }
+              }
+
+            //Zip Code Number input
+            function validateZipCodeNumberOnSubmit()
+              {
+                let paymentID = $('#payment').val();
+                let zipCodeNumber = $('#zip').val();
+                let zipCodeRegex = zipCodeNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+                if(paymentID == "credit card")
+                  {
+                    if(!zipCodeNumber)
+                      {
+                        return false;
+                      } else if(zipCodeNumber && !zipCodeRegex)
+                        {
+                          return false;
+                        } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5))
+                          {
+                            return false;
+                          } else
+                            {
+                              return true;
+                            }
+                    }
+                }
+
+                //CVV Number input
+                function validateCVVNumberOnSubmit()
+                  {
+                    let paymentID = $('#payment').val();
+                    let cvvNumber = $('#cvv').val();
+                    let cvvRegex = cvvNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+                    if(paymentID == "credit card")
+                      {
+                        if(!cvvNumber)
+                          {
+                            return false;
+                          } else if(cvvNumber && !cvvRegex)
+                            {
+                              return false;
+                            } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3))
+                              {
+                                return false;
+                              } else
+                                {
+                                  return true;
+                                }
+                        }
+                    }
+
 
       //When Form is submitted, check for the following errors
       $('button').click(function(event)
@@ -501,19 +573,50 @@ $(document).ready(function ()
                           $('label[for="zip"]').html('<span style="color:inherit">Zip Code:</span>');
                         }
 
+                //validate cvv input
+                if(!cvvNumber)
+                  {
+                    $('#cvv').css("border", "2px solid firebrick");
+                    $('label[for="cvv"]').html('<span style="color:firebrick"><strong>CVV:</strong></span>');
+                  } else if(cvvNumber && !cvvRegex)
+                    {
+                      $('#cvv').css("border", "2px solid firebrick");
+                      $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
+                    } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3))
+                      {
+                        $('#cvv').css("border", "2px solid firebrick");
+                        $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Must be 3 digits)</strong></span>');
+                      } else
+                        {
+                          $('#cvv').css("border", "1px solid #679cb3");
+                          $('label[for="cvv"]').html('<span style="color:inherit">CVV:</span>');
+                        }
+
 
               }
 
 
 
 
-
+          //Submit the form if all form fields are valid
           if(validateNameFieldOnSubmit() == true &&
              validateEmailFieldOnSubmit() == true &&
              validateActivitiesSectionOnSubmit() == true)
             {
-              $('form').submit();
-              alert("form submitted");
+              if(paymentID == "credit card")
+                {
+                  if(validateCreditCardNumberOnSubmit() == true &&
+                     validateZipCodeNumberOnSubmit() == true &&
+                     validateCVVNumberOnSubmit() == true)
+                     {
+                       $('form').submit();
+                       alert("form submitted");
+                     }
+                } else
+                  {
+                    $('form').submit();
+                    alert("form submitted");
+                  }
             }
         });
 

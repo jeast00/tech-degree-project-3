@@ -286,9 +286,6 @@ $(document).ready(function ()
     //Remove the "select payment method" option from the list.
     $('#payment option[value="select_method"]').remove();
 
-    //Initiate the credit card option selected on default
-    $('#credit-card').attr('selected', 'selected');
-
     //Initially hide the first and last paragraphs from the payment options to ensure
     //the credit card payment method is selected by default
     $('p:first').hide();
@@ -302,17 +299,14 @@ $(document).ready(function ()
             $('p:first').hide();
             $('p:last').hide();
             $('#credit-card').show();
-            $('#credit-card').attr('selected', 'selected');
           }else if ($(this).val() == 'paypal')
             {
               $('#credit-card').hide();
-              $('#credit-card').removeAttr('selected');
               $('p:last').hide();
               $('p:first').show();
             }else if ($(this).val() == 'bitcoin')
               {
                 $('#credit-card').hide();
-                $('#credit-card').removeAttr('selected');
                 $('p:first').hide();
                 $('p:last').show();
               }
@@ -384,20 +378,63 @@ $(document).ready(function ()
 
       //----------------------------------------------------------------------------------------------//
 
+      //Create Functions to validate each field and call the functions in the button event handler function
+      //Name field
+      function validateNameFieldOnSubmit()
+        {
+          if(!$('#name').val())
+            {
+              $('#name').focus();
+              // $('#name').css("border", "2px solid firebrick");
+              // $('label[for="name"]').html('<span style="color:firebrick"><strong>Name: (Please enter your name)</strong></span>');
+              return false;
+            } else
+              {
+                return true;
+              }
+        }
 
+        //Email field
+        function validateEmailFieldOnSubmit()
+          {
+            if(!$('#mail').val())
+              {
+                // $('#mail').css("border", "2px solid firebrick");
+                // $('label[for="mail"]').html('<span style="color:firebrick"><strong>Email: (Please enter your email address)</strong></span>');
+                return false;
+              } else
+                {
+                  return true;
+                }
+          }
+
+          //Activities section
+          function validateActivitiesSectionOnSubmit()
+            {
+              let activityLegend = $('legend')[2];
+              if(!$('.activities input:checked').length > 0)
+                {
+                  // $(activityLegend).html('<span style="color:firebrick"><strong>Register for Activities: (Please select at least one activity)</strong></span>');
+                  return false;
+                } else
+                  {
+                    // $(activityLegend).html('<span style="color:inherit">Register for Activities</span>');
+                    return true;
+                  }
+            }
 
 
       //When Form is submitted, check for the following errors
       $('button').click(function(event)
         {
           event.preventDefault(); //Prevent the form from submitting before all form fields are valid
-
+          let paymentID = $('#payment').val();
           let ccNumber = $('#cc-num').val();
           let zipCodeNumber = $('#zip').val();
           let cvvNumber = $('#cvv').val();
-          let ccNumberRegex = ccNumber.match(/[0-9]+/);
-          let zipCodeRegex = zipCodeNumber.match(/[0-9]+/);
-          let cvvRegex = cvvNumber.match(/[0-9]+/);
+          let ccNumberRegex = ccNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+          let zipCodeRegex = zipCodeNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+          let cvvRegex = cvvNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
 
           //Name Error Message
           if(!$('#name').val())
@@ -423,40 +460,57 @@ $(document).ready(function ()
                 $(activityLegend).html('<span style="color:inherit">Register for Activities</span>');
               }
 
-          if($('#credit-card :selected'))
-            {
-              if(!ccNumber)
-                {
-                  $('#cc-num').css("border", "2px solid firebrick");
-                  $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>Card Number:</strong></span>');
-                } else if(ccNumber && !ccNumberRegex)
+
+            if(paymentID == "credit card")
+              {
+                //validate credit card input
+                if(!ccNumber)
                   {
                     $('#cc-num').css("border", "2px solid firebrick");
-                    $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Please enter a number)</strong></span>');
-                  } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16))
+                    $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>Card Number:</strong></span>');
+                  } else if(ccNumber && !ccNumberRegex)
                     {
                       $('#cc-num').css("border", "2px solid firebrick");
-                      $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Must be 13 to 16 digits long)</strong></span>');
-                    }
+                      $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
+                    } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16))
+                      {
+                        $('#cc-num').css("border", "2px solid firebrick");
+                        $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Must be 13 to 16 digits long)</strong></span>');
+                      } else
+                      {
+                        $('#cc-num').css("border", "1px solid #679cb3");
+                        $('label[for="cc-num"]').html('<span style="color:inherit"><strong>Card Number:</strong></span>');
+                      }
 
-                  else
+                //validate zipcode input
+                if(!zipCodeNumber)
+                  {
+                    $('#zip').css("border", "2px solid firebrick");
+                    $('label[for="zip"]').html('<span style="color:firebrick"><strong>Zip Code:</strong></span>');
+                  } else if(zipCodeNumber && !zipCodeRegex)
                     {
-                      $('#cc-num').css("border", "1px solid #679cb3");
-                      $('label[for="cc-num"]').html('<span style="color:inherit"><strong>Card Number:</strong></span>');
-                    }
+                      $('#zip').css("border", "2px solid firebrick");
+                      $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
+                    } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5))
+                      {
+                        $('#zip').css("border", "2px solid firebrick");
+                        $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Must be 5 digits)</strong></span>');
+                      } else
+                        {
+                          $('#zip').css("border", "1px solid #679cb3");
+                          $('label[for="zip"]').html('<span style="color:inherit">Zip Code:</span>');
+                        }
+
+
+              }
 
 
 
-            }
 
 
-
-
-
-          if($('#name').val() != '' &&
-             $('#mail').val() != '' &&
-             $('.activities input:checked').length > 0 &&
-             $('cc-num') != '' && ccNumber && ccNumberRegex && (ccNumber.length >= 13 && ccNumber.length <=16))
+          if(validateNameFieldOnSubmit() == true &&
+             validateEmailFieldOnSubmit() == true &&
+             validateActivitiesSectionOnSubmit() == true)
             {
               $('form').submit();
               alert("form submitted");

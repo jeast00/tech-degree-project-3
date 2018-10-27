@@ -12,13 +12,8 @@ $(document).ready(function ()
   {
 
 
-  //Step 1 - Set focus on the first text field by default when the page loads
+    //Set focus on the first text field by default when the page loads
     $('#name').focus();
-
-    //Step 2 - 2 part 'Job Role' Section //
-    //Include a text field that will be revealed when the "Other" option is selected
-    //from the "Job Role" drop down menu
-    //Give the field an id of "other-title", and add the placeholder text of "Your Job Role"
 
     //hide the hide the 'other' input field initially at start
     $('#other-title').hide();
@@ -43,22 +38,6 @@ $(document).ready(function ()
       });
 
 
-    /* --Step 3-- T-Shirt Info Section -- //
-      Create a function that holds the T-Shirt Info Section.
-      For the T-Shirt "Color" menu, only display the color
-      options that match the design selected in the "Design"
-      menu.
-
-      If the user selects "Theme - JS Puns" then the color menu
-      should only display "Cornflower Blue", "Dark Slate Grey",
-      and "Gold".
-
-      If the user selects "Theme - JS Puns" then the color menu
-      should only display "Tomato", "Steel Blue", and "Dim Grey".
-
-      When a new theme is selected from the "Design" menu, the "Color"
-      field and drop down menu is updated.
-    */
 
     function removeColorList()
       {
@@ -82,6 +61,7 @@ $(document).ready(function ()
         $('#colors-js-puns').show();
       }
 
+    //Create seperate functions for each t-shirt theme color list
     function appendJSPunsColorList()
       {
         $('#color').append('<option value="cornflowerblue">Cornflower Blue</option>');
@@ -96,7 +76,7 @@ $(document).ready(function ()
         $('#color').append('<option value="dimgrey">Dim Grey</option>');
       }
 
-
+    //Create an event listener function that updates the color list when a t-shirt theme is clicked
     $('#design').click(function()
       {
         if($(this).val() == 'js puns')
@@ -116,42 +96,10 @@ $(document).ready(function ()
       });
 
 
-
-    //--- Exceeds Expectations ---//
-    /*
-      Create a function that hides the color dropdown list and the list cannot
-      be selected until the user selects a t-shirt theme.
-    */
-    //----------------------------//
-
-
     //---------------------------------------------------------------------//
 
+    //Register for Activities Section
 
-    /*
-      Create a function when a t-shirt theme is selected, the color list
-      updates to the correct color list for that theme.  Else, the select theme
-      option hides the color label and menu *EXTRA CREDIT* and will not appear until
-      the user has selected a t-shirt theme.
-    */
-
-    //---------------------------------------------------------------------//
-
-
-    /*  --Step 4-- "Register for Activities" Section - DONE!!!!!!!!!!!!!!!!
-      Some events are at the same day and time as others. If the user selects
-      a workshop, don't allow selection of a workshop at the same date and time --
-      you should disable the checkbox and visually indicate that the workshop in
-      the competing time slot is unavailable.
-
-      When a user unchecks an activity, make sure that competing activities(if any)
-      are no longer disabled.
-
-      As a user selects activities, a running total should display below the list
-      of checkboxes. For example, if the user selects "Main Conference", then
-      Total: $200 should appear. If they add 1 workshop, the total should change
-      to Total: $300.
-    */
     //Set the values dynamically to each activity
     $('[name=all]').val(200);
     $('[name=js-frameworks]').val(100);
@@ -234,9 +182,6 @@ $(document).ready(function ()
     //Create and append a total amount ID to the html file
     $('.activities').append('<span id="totalAmount"></span>');
 
-    //hide the total until a checkbox is checked
-    // $('#totalAmount').hide();
-
     //Calculate the total and show the total amount when checkboxes are clicked -
     //hide the total amount when no checkboxes are clicked
     $('.activities').click(function(event)
@@ -244,7 +189,7 @@ $(document).ready(function ()
         let calculateTotal = 0;
         $('input[type=checkbox]:checked').each(function()
           {
-            calculateTotal += parseInt($(this).val());
+            calculateTotal += parseInt($(this).val()); //parseInt is used to change the string value to an integer value
           });
           if(calculateTotal == 0)
             {
@@ -262,26 +207,11 @@ $(document).ready(function ()
 
 
 
-    //------------------------------------------------------------------------------------//
+    //-----------------------------------------------------------------------//
 
 
-    /* --Step 5-- "Payment Info" Section
-      Display payment sections based on the payment option chosen in the select menu.
+    //Payment Info Section
 
-      The "Credit Card" payment option should be selected by default. Display the #credit-card
-      div, and hide the "PayPal" and "Bitcoin" information. Payment option in the
-      select menu should match the payment option displayed on the page.
-
-      When a user selects the "PayPal" payment option, the PayPal information should
-      display, and the credit card and "Bitcoin" information should be hidden.
-
-      When a user selects the "Bitcoin" payment option, the Bitcoin information should
-      display, and the credit card and "PayPal" information should be hidden.
-
-      note: The user should not be able to select the "Select Payment Method" option
-      from the payment select menu, because the user should not be able to submit the
-      form without a chosen payment option.
-    */
 
     //Remove the "select payment method" option from the list.
     $('#payment option[value="select_method"]').remove();
@@ -315,40 +245,14 @@ $(document).ready(function ()
 
     //-------------------------------------------------------------------------------//
 
+    //Form Validation
 
-    /* --Step 6-- Form Validation
-      If any of the following validation errors exist, prevent the user from submitting
-      the form:
-
-        Name field can not be blank
-
-        Email field must be a validly formatted e-mail address(you don't have to check
-        that it's a real e-mail address, just that it's formatted like one:
-        dave@teamtreehouse.com for example).
-
-        User must select at least one checkbox under the "Register for Activities"
-        section of the form.
-
-        If the selected payment option is "Credit Card", make sure the user has
-        supplied a Credit Card number, a Zip Code, and a 3 number CVV value before
-        the form can be submitted.
-
-        Credit Card field should only accept a number between 13 and 16 digits.
-
-        The Zip Code field should accept a 5-digit number.
-
-        The CVV should only accept a number that is exactly 3 digits long.
-
-        note: Make sure your validation is only validating the Credit Card info
-        if Credit Card is the selected payment method.
-    */
-
-    //----------------------------------------------------------------------------------------------//
+    //Real Time Error Messages - Extra Credit -- Exceeds Expectations
 
     //Name cannot be blank ~~Real-Time error message 1 --Extra Credit-- --Exceeds Expectations
     $('#name').on('input', function(event)
       {
-        if($.trim($(this).val()) == '')
+        if($.trim($(this).val()) == '') //$.trim (to remove white spaces) I found this on jQuery.com when I was trying to figure out how to validate empty form fields and if a user types spaces in the form field -- Attribution link -- https://api.jquery.com/jQuery.trim/#jQuery-trim-str  ||--||
           {
             $(this).css("border", "2px solid firebrick");
             $('label[for="name"]').html('<span style="color:firebrick"><strong>Name cannot be blank</strong></span>');
@@ -364,7 +268,7 @@ $(document).ready(function ()
     $('#mail').on('input', function()
       {
         let emailRegularExpression = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-        let emailValidation = emailRegularExpression.test($.trim($(this).val()));
+        let emailValidation = emailRegularExpression.test($.trim($(this).val())); //$.trim Attribution link -- https://api.jquery.com/jQuery.trim/#jQuery-trim-str ||--||
         if(!emailValidation)
           {
             $(this).css("border", "2px solid firebrick");
@@ -376,15 +280,16 @@ $(document).ready(function ()
             }
       });
 
-      //----------------------------------------------------------------------------------------------//
+      //----------------------------------------------------------------------//
 
       //Create Functions to validate each field and call the functions in the button event handler function
+
       //Name field
       function validateNameFieldOnSubmit()
         {
           if(!$('#name').val())
             {
-              $('#name').focus(); //Ensure that the Name input field is still focused when the 'register' button is clicked
+              $('#name').focus(); //Ensure that the Name input field is still focused when the 'register' button is clicked and returned false
               return false;
             } else
               {
@@ -397,8 +302,6 @@ $(document).ready(function ()
           {
             if(!$('#mail').val())
               {
-                // $('#mail').css("border", "2px solid firebrick");
-                // $('label[for="mail"]').html('<span style="color:firebrick"><strong>Email: (Please enter your email address)</strong></span>');
                 return false;
               } else
                 {
@@ -409,14 +312,11 @@ $(document).ready(function ()
           //Activities section
           function validateActivitiesSectionOnSubmit()
             {
-              let activityLegend = $('legend')[2];
               if(!$('.activities input:checked').length > 0)
                 {
-                  // $(activityLegend).html('<span style="color:firebrick"><strong>Register for Activities: (Please select at least one activity)</strong></span>');
                   return false;
                 } else
                   {
-                    // $(activityLegend).html('<span style="color:inherit">Register for Activities</span>');
                     return true;
                   }
             }
@@ -497,7 +397,7 @@ $(document).ready(function ()
       //When Form is submitted, check for the following errors
       $('button').click(function(event)
         {
-          event.preventDefault(); //Prevent the form from submitting before all form fields are valid
+          event.preventDefault(); //Prevent the form from submitting until all form fields are valid
           let paymentID = $('#payment').val();
           let ccNumber = $('#cc-num').val();
           let zipCodeNumber = $('#zip').val();
@@ -538,11 +438,11 @@ $(document).ready(function ()
                   {
                     $('#cc-num').css("border", "2px solid firebrick");
                     $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>Card Number:</strong></span>');
-                  } else if(ccNumber && !ccNumberRegex)
+                  } else if(ccNumber && !ccNumberRegex) // Exceeds Expectations -- Update error message for Credit Card after button has been clicked if input is not a number
                     {
                       $('#cc-num').css("border", "2px solid firebrick");
-                      $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
-                    } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16))
+                      $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Please enter a credit card number)</strong></span>');
+                    } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16)) //Exceeds Expectations -- Update error message for Credit Card after button has been clicked if input length is not equal to or within range
                       {
                         $('#cc-num').css("border", "2px solid firebrick");
                         $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Must be 13 to 16 digits long)</strong></span>');
@@ -557,11 +457,11 @@ $(document).ready(function ()
                   {
                     $('#zip').css("border", "2px solid firebrick");
                     $('label[for="zip"]').html('<span style="color:firebrick"><strong>Zip Code:</strong></span>');
-                  } else if(zipCodeNumber && !zipCodeRegex)
+                  } else if(zipCodeNumber && !zipCodeRegex) //Exceeds Expectations -- Update error message for zip code after button has been clicked if input is not a number
                     {
                       $('#zip').css("border", "2px solid firebrick");
                       $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
-                    } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5))
+                    } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5)) //Exceeds Expectations -- Update error message for zip code after button has been clicked if input length does not equal 5
                       {
                         $('#zip').css("border", "2px solid firebrick");
                         $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Must be 5 digits)</strong></span>');
@@ -576,11 +476,11 @@ $(document).ready(function ()
                   {
                     $('#cvv').css("border", "2px solid firebrick");
                     $('label[for="cvv"]').html('<span style="color:firebrick"><strong>CVV:</strong></span>');
-                  } else if(cvvNumber && !cvvRegex)
+                  } else if(cvvNumber && !cvvRegex) //Exceeds Expectations -- Update error message for CVV after the button has been clicked if input is not a number
                     {
                       $('#cvv').css("border", "2px solid firebrick");
                       $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
-                    } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3))
+                    } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3)) //Exceeds Expectations -- Update error message for CVV after the button has been clicked if the input length does not equal to 3
                       {
                         $('#cvv').css("border", "2px solid firebrick");
                         $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Must be 3 digits)</strong></span>');
@@ -590,10 +490,7 @@ $(document).ready(function ()
                           $('label[for="cvv"]').html('<span style="color:inherit"><strong>CVV:</strong></span>');
                         }
 
-
               }
-
-
 
 
           //Submit the form if all form fields are valid
@@ -608,12 +505,12 @@ $(document).ready(function ()
                      validateCVVNumberOnSubmit() == true)
                      {
                        $('form').submit();
-                       alert("form is submitted. Thank you!");
+                       alert("form is submitted. Thank you!"); //Just for user validation purposes; Will remove when ready to submit project for grading
                      }
                 } else
                   {
                     $('form').submit();
-                    alert("form is submitted. Thank you!");
+                    alert("form is submitted. Thank you!"); //Just for user validation purposes; Will remove when ready to submit project for grading
                   }
             }
         });

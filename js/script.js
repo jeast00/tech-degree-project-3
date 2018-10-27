@@ -38,6 +38,7 @@ $(document).ready(function ()
       });
 
 
+    //T-Shirt Section
 
     function removeColorList()
       {
@@ -77,7 +78,7 @@ $(document).ready(function ()
       }
 
     //Create an event listener function that updates the color list when a t-shirt theme is clicked
-    $('#design').click(function()
+    $('#design').change(function()
       {
         if($(this).val() == 'js puns')
           {
@@ -189,7 +190,7 @@ $(document).ready(function ()
         let calculateTotal = 0;
         $('input[type=checkbox]:checked').each(function()
           {
-            calculateTotal += parseInt($(this).val()); //parseInt is used to change the string value to an integer value
+            calculateTotal += parseInt($(this).val()); //parseInt used to change the string value to an integer value
           });
           if(calculateTotal == 0)
             {
@@ -203,15 +204,9 @@ $(document).ready(function ()
               }
       });
 
-
-
-
-
     //-----------------------------------------------------------------------//
 
-
     //Payment Info Section
-
 
     //Remove the "select payment method" option from the list.
     $('#payment option[value="select_method"]').remove();
@@ -254,11 +249,11 @@ $(document).ready(function ()
       {
         if($.trim($(this).val()) == '') //$.trim (to remove white spaces) I found this on jQuery.com when I was trying to figure out how to validate empty form fields and if a user types spaces in the form field -- Attribution link -- https://api.jquery.com/jQuery.trim/#jQuery-trim-str  ||--||
           {
-            $(this).css("border", "2px solid firebrick");
+            $(this).css("border", "1px solid firebrick");
             $('label[for="name"]').html('<span style="color:firebrick"><strong>Name cannot be blank</strong></span>');
           }else
             {
-              $(this).css("border", "2px solid #679cb3");
+              $(this).css("border", "1px solid #679cb3");
               $('label[for="name"]').html('<span style="color:inherit"><strong>Name:</strong></span>');
             }
       });
@@ -271,11 +266,11 @@ $(document).ready(function ()
         let emailValidation = emailRegularExpression.test($.trim($(this).val())); //$.trim Attribution link -- https://api.jquery.com/jQuery.trim/#jQuery-trim-str ||--||
         if(!emailValidation)
           {
-            $(this).css("border", "2px solid firebrick");
+            $(this).css("border", "1px solid firebrick");
             $('label[for="mail"]').html('<span style="color:firebrick"><strong>Please enter a formatted email address (i.e.: yourname@domain.com)</strong></span>');
           }else
             {
-              $(this).css("border", "2px solid #679cb3");
+              $(this).css("border", "1px solid #679cb3");
               $('label[for="mail"]').html('<span style="color:inherit"><strong>Email:</strong></span>');
             }
       });
@@ -297,107 +292,121 @@ $(document).ready(function ()
               }
         }
 
-        //Email field
-        function validateEmailFieldOnSubmit()
-          {
-            if(!$('#mail').val())
-              {
-                return false;
-              } else
-                {
-                  return true;
-                }
-          }
-
-          //Activities section
-          function validateActivitiesSectionOnSubmit()
+      //Email field
+      function validateEmailFieldOnSubmit()
+        {
+          if(!$('#mail').val())
             {
-              if(!$('.activities input:checked').length > 0)
-                {
-                  return false;
-                } else
-                  {
-                    return true;
-                  }
+              return false;
+            } else
+              {
+                return true;
+              }
+        }
+
+      //T-Shirt section
+      function validateTShirtSectionOnSubmit()
+        {
+          let shirtOption = $('#design').val();
+          if(shirtOption == "Select Theme")
+            {
+              return false;
+            } else
+              {
+                return true;
+              }
+        }
+
+      //Activities section
+      function validateActivitiesSectionOnSubmit()
+        {
+          if(!$('.activities input:checked').length > 0)
+            {
+              return false;
+            } else
+              {
+                return true;
+              }
             }
 
-          //Credit Card Number input
-          function validateCreditCardNumberOnSubmit()
+      //Credit Card Number input
+      function validateCreditCardNumberOnSubmit()
+        {
+          let paymentID = $('#payment').val();
+          let ccNumber = $('#cc-num').val();
+          let ccNumberRegex = ccNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+          if(paymentID == "credit card")
             {
-              let paymentID = $('#payment').val();
-              let ccNumber = $('#cc-num').val();
-              let ccNumberRegex = ccNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
-              if(paymentID == "credit card")
+              if(!ccNumber)
                 {
-                  if(!ccNumber)
+                  return false;
+                } else if(ccNumber && !ccNumberRegex)
+                  {
+                    return false;
+                  } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16))
                     {
                       return false;
-                    } else if(ccNumber && !ccNumberRegex)
+                    } else
                       {
-                        return false;
-                      } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16))
-                        {
-                          return false;
-                        } else
-                        {
-                          return true;
-                        }
-                }
-              }
+                        return true;
+                      }
+            }
+        }
 
-            //Zip Code Number input
-            function validateZipCodeNumberOnSubmit()
-              {
-                let paymentID = $('#payment').val();
-                let zipCodeNumber = $('#zip').val();
-                let zipCodeRegex = zipCodeNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
-                if(paymentID == "credit card")
+      //Zip Code Number input
+      function validateZipCodeNumberOnSubmit()
+        {
+          let paymentID = $('#payment').val();
+          let zipCodeNumber = $('#zip').val();
+          let zipCodeRegex = zipCodeNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+          if(paymentID == "credit card")
+            {
+              if(!zipCodeNumber)
+                {
+                  return false;
+                } else if(zipCodeNumber && !zipCodeRegex)
                   {
-                    if(!zipCodeNumber)
+                    return false;
+                  } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5))
+                    {
+                      return false;
+                    } else
                       {
-                        return false;
-                      } else if(zipCodeNumber && !zipCodeRegex)
-                        {
-                          return false;
-                        } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5))
-                          {
-                            return false;
-                          } else
-                            {
-                              return true;
-                            }
-                    }
-                }
+                        return true;
+                      }
+            }
+        }
 
-                //CVV Number input
-                function validateCVVNumberOnSubmit()
+      //CVV Number input
+      function validateCVVNumberOnSubmit()
+        {
+          let paymentID = $('#payment').val();
+          let cvvNumber = $('#cvv').val();
+          let cvvRegex = cvvNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+          if(paymentID == "credit card")
+            {
+              if(!cvvNumber)
+                {
+                  return false;
+                } else if(cvvNumber && !cvvRegex)
                   {
-                    let paymentID = $('#payment').val();
-                    let cvvNumber = $('#cvv').val();
-                    let cvvRegex = cvvNumber.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
-                    if(paymentID == "credit card")
+                    return false;
+                  } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3))
+                    {
+                      return false;
+                    } else
                       {
-                        if(!cvvNumber)
-                          {
-                            return false;
-                          } else if(cvvNumber && !cvvRegex)
-                            {
-                              return false;
-                            } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3))
-                              {
-                                return false;
-                              } else
-                                {
-                                  return true;
-                                }
-                        }
-                    }
+                        return true;
+                      }
+            }
+        }
 
 
       //When Form is submitted, check for the following errors
       $('button').click(function(event)
         {
           event.preventDefault(); //Prevent the form from submitting until all form fields are valid
+          let shirtOption = $('#design').val();
           let paymentID = $('#payment').val();
           let ccNumber = $('#cc-num').val();
           let zipCodeNumber = $('#zip').val();
@@ -409,16 +418,26 @@ $(document).ready(function ()
           //Name Error Message
           if(!$('#name').val())
             {
-              $('#name').css("border", "2px solid firebrick");
+              $('#name').css("border", "1px solid firebrick");
               $('label[for="name"]').html('<span style="color:firebrick"><strong>Name: (Please enter your name)</strong></span>');
             }
 
           //Email Error Message
           if(!$('#mail').val())
             {
-              $('#mail').css("border", "2px solid firebrick");
+              $('#mail').css("border", "1px solid firebrick");
               $('label[for="mail"]').html('<span style="color:firebrick"><strong>Email: (Please enter your email address)</strong></span>');
             }
+
+          //T-shirt error message (optional)
+          let shirtLegend = $('legend')[1];
+          if(shirtOption == "Select Theme")
+            {
+              $(shirtLegend).html('<span style="color:firebrick"><strong>T-Shirt Info: (Do not forget to select your t-shirt!)</strong></span>');
+            } else
+                {
+                  $(shirtLegend).html('<span style="color:inherit">T-Shirt Info</span>');
+                }
 
           //Activity Error Message
           let activityLegend = $('legend')[2];
@@ -431,71 +450,72 @@ $(document).ready(function ()
               }
 
 
-            if(paymentID == "credit card")
-              {
-                //validate credit card input
-                if(!ccNumber)
+          if(paymentID == "credit card")
+            {
+              //validate credit card input
+              if(!ccNumber)
+                {
+                  $('#cc-num').css("border", "1px solid firebrick");
+                  $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>Card Number:</strong></span>');
+                } else if(ccNumber && !ccNumberRegex) // Exceeds Expectations -- Update error message for Credit Card after button has been clicked if input is not a number
                   {
-                    $('#cc-num').css("border", "2px solid firebrick");
-                    $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>Card Number:</strong></span>');
-                  } else if(ccNumber && !ccNumberRegex) // Exceeds Expectations -- Update error message for Credit Card after button has been clicked if input is not a number
+                    $('#cc-num').css("border", "1px solid firebrick");
+                    $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Please enter a credit card number)</strong></span>');
+                  } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16)) //Exceeds Expectations -- Update error message for Credit Card after button has been clicked if input length is not equal to or within range
                     {
-                      $('#cc-num').css("border", "2px solid firebrick");
-                      $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Please enter a credit card number)</strong></span>');
-                    } else if(ccNumber && ccNumberRegex && !(ccNumber.length >= 13 && ccNumber.length <= 16)) //Exceeds Expectations -- Update error message for Credit Card after button has been clicked if input length is not equal to or within range
-                      {
-                        $('#cc-num').css("border", "2px solid firebrick");
-                        $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Must be 13 to 16 digits long)</strong></span>');
-                      } else
+                      $('#cc-num').css("border", "1px solid firebrick");
+                      $('label[for="cc-num"]').html('<span style="color:firebrick"><strong>(Must be 13 to 16 digits long)</strong></span>');
+                    } else
                       {
                         $('#cc-num').css("border", "1px solid #679cb3");
                         $('label[for="cc-num"]').html('<span style="color:inherit"><strong>Card Number:</strong></span>');
                       }
 
-                //validate zipcode input
-                if(!zipCodeNumber)
+              //validate zipcode input
+              if(!zipCodeNumber)
+                {
+                  $('#zip').css("border", "1px solid firebrick");
+                  $('label[for="zip"]').html('<span style="color:firebrick"><strong>Zip Code:</strong></span>');
+                } else if(zipCodeNumber && !zipCodeRegex) //Exceeds Expectations -- Update error message for zip code after button has been clicked if input is not a number
                   {
-                    $('#zip').css("border", "2px solid firebrick");
-                    $('label[for="zip"]').html('<span style="color:firebrick"><strong>Zip Code:</strong></span>');
-                  } else if(zipCodeNumber && !zipCodeRegex) //Exceeds Expectations -- Update error message for zip code after button has been clicked if input is not a number
+                    $('#zip').css("border", "1px solid firebrick");
+                    $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
+                  } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5)) //Exceeds Expectations -- Update error message for zip code after button has been clicked if input length does not equal 5
                     {
-                      $('#zip').css("border", "2px solid firebrick");
-                      $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
-                    } else if(zipCodeNumber && zipCodeRegex && !(zipCodeNumber.length == 5)) //Exceeds Expectations -- Update error message for zip code after button has been clicked if input length does not equal 5
+                      $('#zip').css("border", "1px solid firebrick");
+                      $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Must be 5 digits)</strong></span>');
+                    } else
                       {
-                        $('#zip').css("border", "2px solid firebrick");
-                        $('label[for="zip"]').html('<span style="color:firebrick"><strong>(Must be 5 digits)</strong></span>');
-                      } else
-                        {
-                          $('#zip').css("border", "1px solid #679cb3");
-                          $('label[for="zip"]').html('<span style="color:inherit"><strong>Zip Code:</strong></span>');
-                        }
+                        $('#zip').css("border", "1px solid #679cb3");
+                        $('label[for="zip"]').html('<span style="color:inherit"><strong>Zip Code:</strong></span>');
+                      }
 
-                //validate cvv input
-                if(!cvvNumber)
+              //validate cvv input
+              if(!cvvNumber)
+                {
+                  $('#cvv').css("border", "1px solid firebrick");
+                  $('label[for="cvv"]').html('<span style="color:firebrick"><strong>CVV:</strong></span>');
+                } else if(cvvNumber && !cvvRegex) //Exceeds Expectations -- Update error message for CVV after the button has been clicked if input is not a number
                   {
-                    $('#cvv').css("border", "2px solid firebrick");
-                    $('label[for="cvv"]').html('<span style="color:firebrick"><strong>CVV:</strong></span>');
-                  } else if(cvvNumber && !cvvRegex) //Exceeds Expectations -- Update error message for CVV after the button has been clicked if input is not a number
+                    $('#cvv').css("border", "1px solid firebrick");
+                    $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
+                  } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3)) //Exceeds Expectations -- Update error message for CVV after the button has been clicked if the input length does not equal to 3
                     {
-                      $('#cvv').css("border", "2px solid firebrick");
-                      $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Numbers only)</strong></span>');
-                    } else if(cvvNumber && cvvRegex && !(cvvNumber.length == 3)) //Exceeds Expectations -- Update error message for CVV after the button has been clicked if the input length does not equal to 3
+                      $('#cvv').css("border", "1px solid firebrick");
+                      $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Must be 3 digits)</strong></span>');
+                    } else
                       {
-                        $('#cvv').css("border", "2px solid firebrick");
-                        $('label[for="cvv"]').html('<span style="color:firebrick"><strong>(Must be 3 digits)</strong></span>');
-                      } else
-                        {
-                          $('#cvv').css("border", "1px solid #679cb3");
-                          $('label[for="cvv"]').html('<span style="color:inherit"><strong>CVV:</strong></span>');
-                        }
+                        $('#cvv').css("border", "1px solid #679cb3");
+                        $('label[for="cvv"]').html('<span style="color:inherit"><strong>CVV:</strong></span>');
+                      }
 
-              }
+            }
 
 
           //Submit the form if all form fields are valid
           if(validateNameFieldOnSubmit() == true &&
              validateEmailFieldOnSubmit() == true &&
+             validateTShirtSectionOnSubmit() == true &&
              validateActivitiesSectionOnSubmit() == true)
             {
               if(paymentID == "credit card")

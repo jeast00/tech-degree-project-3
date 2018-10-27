@@ -26,7 +26,7 @@ $(document).ready(function ()
       are clicked, hide the 'other' input field
     */
 
-    $('#title').click(function()
+    $('#title').change(function()
       {
         if($(this).val() == 'other')
           {

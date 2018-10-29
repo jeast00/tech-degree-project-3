@@ -15,7 +15,7 @@ $(document).ready(function ()
     //Set focus on the first text field by default when the page loads
     $('#name').focus();
 
-    //hide the hide the 'other' input field initially at start
+    //hide the 'other' input field initially at start
     $('#other-title').hide();
 
 
@@ -57,6 +57,7 @@ $(document).ready(function ()
 
     hideColorLabelAndList();
 
+    //Create a function to show the color and label list
     function showColorLabelAndList()
       {
         $('#colors-js-puns').show();
@@ -65,6 +66,7 @@ $(document).ready(function ()
     //Create seperate functions for each t-shirt theme color list
     function appendJSPunsColorList()
       {
+        //append the colors to JS Puns
         $('#color').append('<option value="cornflowerblue">Cornflower Blue</option>');
         $('#color').append('<option value="darkslategrey">Dark Slate Grey</option>');
         $('#color').append('<option value="gold">Gold</option>');
@@ -72,6 +74,7 @@ $(document).ready(function ()
 
     function appendHeartJSColorList()
       {
+        //append the colors to Heart JS
         $('#color').append('<option value="tomato">Tomato</option>');
         $('#color').append('<option value="steelblue">Steel Blue</option>');
         $('#color').append('<option value="dimgrey">Dim Grey</option>');
@@ -247,7 +250,7 @@ $(document).ready(function ()
     //Name cannot be blank ~~Real-Time error message 1 --Extra Credit-- --Exceeds Expectations
     $('#name').on('input', function(event)
       {
-        if($.trim($(this).val()) == '') //$.trim (to remove white spaces) I found this on jQuery.com when I was trying to figure out how to validate empty form fields and if a user types spaces in the form field -- Attribution link -- https://api.jquery.com/jQuery.trim/#jQuery-trim-str  ||--||
+        if($.trim($(this).val()) == '') //$.trim (to remove white spaces) I found this on jQuery.com when I was trying to figure out how to validate empty form fields and if a user types spaces in the form field that the error message would still show -- Attribution link -- https://api.jquery.com/jQuery.trim/#jQuery-trim-str  ||--||
           {
             $(this).css("border", "1px solid firebrick");
             $('label[for="name"]').html('<span style="color:firebrick"><strong>Name cannot be blank</strong></span>');
@@ -525,12 +528,12 @@ $(document).ready(function ()
                      validateCVVNumberOnSubmit() == true)
                      {
                        $('form').submit();
-                       alert("form is submitted. Thank you!"); //Just for user validation purposes; Will remove when ready to submit project for grading
+                       alert("form is submitted. Thank you!");
                      }
                 } else
                   {
                     $('form').submit();
-                    alert("form is submitted. Thank you!"); //Just for user validation purposes; Will remove when ready to submit project for grading
+                    alert("form is submitted. Thank you!"); 
                   }
             }
         });

@@ -219,7 +219,7 @@ $(document).ready(function ()
     $('p:first').hide();
     $('p:last').hide();
 
-    $('#payment').click(function(event)
+    $('#payment').change(function(event)
       {
         event.preventDefault();
         if($(this).val() == 'credit card')
@@ -533,7 +533,7 @@ $(document).ready(function ()
                 } else
                   {
                     $('form').submit();
-                    alert("form is submitted. Thank you!"); 
+                    alert("form is submitted. Thank you!");
                   }
             }
         });
